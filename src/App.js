@@ -4,7 +4,7 @@ import CountdownTimer from "./components/CountdownTimer";
 import Highscore from "./components/Highscore";
 
 const App = () => {
-    const [startedForm, setStartetForm] = useState();
+    const [fillingForm, setFillingForm] = useState();
     const [currentContestantId, setCurrentContestantId] = useState();
 
     useEffect(() => {
@@ -19,10 +19,10 @@ const App = () => {
             <h1>Skjermeleser-stand</h1>
           </header>
             {
-                startedForm ?
-                <Form setStartetForm={setStartetForm} setCurrentContestantId={setCurrentContestantId}/>
+                fillingForm ?
+                <Form setFillingForm={setFillingForm} setCurrentContestantId={setCurrentContestantId}/>
                 : <>
-                    <CountdownTimer onCountdownFinished={() => setStartetForm(true)}/>
+                    <CountdownTimer onCountdownFinished={() => setFillingForm(true)}/>
                     <Highscore currentContestantId={currentContestantId}/>
                 </>
             }

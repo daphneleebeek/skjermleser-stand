@@ -17,7 +17,7 @@ const StyledForm = styled.form`
   width: 50%;
 `;
 
-const Form = ({ setStartetForm, setCurrentContestantId }) => {
+const Form = ({ setFillingForm, setCurrentContestantId }) => {
     const { startCounting, stopCounting, count } = useStopWatch();
     const [ currentHighscoreList ] = useState(
         localStorage.getItem('highscores') ? JSON.parse(localStorage.getItem('highscores')) : []
@@ -36,17 +36,21 @@ const Form = ({ setStartetForm, setCurrentContestantId }) => {
         startCounting()
     }, [startCounting, setCurrentContestantId, contestantId]);
 
+    const saveHighscoreInLocalStorage = () => {
+        console.log(document.getElementById('name')); // TODO
+        const highscore = {id: contestantId, name: 'test', score: count} // TODO funker ikke som det skal ved lagring
+        const newHighscoreList = currentHighscoreList ? [...currentHighscoreList, highscore] : [highscore]
+        localStorage.setItem('highscores', JSON.stringify(newHighscoreList));
+    };
+
 
     const sendInnSkjema = (event) => {
         event.preventDefault();
         // TODO: validering
         // TODO: Stopp timer
-        console.log(document.getElementById('name')); // TODO
-        const highscore = {id: contestantId, name: 'test', score: count} // TODO
-        const newHighscoreList = currentHighscoreList ? [...currentHighscoreList, highscore] : [highscore]
-        localStorage.setItem('highscores', JSON.stringify(newHighscoreList));
+        saveHighscoreInLocalStorage();
         stopCounting()
-        setStartetForm(false);
+        setFillingForm(false);
     }
 
     return (
