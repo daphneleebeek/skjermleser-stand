@@ -1,12 +1,19 @@
-import './App.css';
+import React, { useState } from "react";
+import Skjema from "./components/Skjema";
+import CountdownTimer from "./components/CountdownTimer";
 
-function App() {
-  return (
-    <main className="App">
-      <header className="App-header">
-        <h1>Skjermeleser-stand</h1>
-      </header>
-    </main>
+const App = () => {
+    const [startetSkjema, settStartetSkjema] = useState();
+
+      return (
+        <main className="App">
+          <header className="App-header">
+            <h1>Skjermeleser-stand</h1>
+          </header>
+            {startetSkjema ?
+                <Skjema settStartetSkjema={settStartetSkjema} />
+                : <CountdownTimer onCountdownFinished={() => settStartetSkjema(true)}/>}
+        </main>
   );
 }
 
