@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 
-const useTimer = (initialValue, intervalMs, onFinished) => {
+const useCountdown = (initialValue, intervalMs, onFinished) => {
     const [count, setCount] = useState(initialValue);
 
     const intervalRef = useRef(null);
@@ -28,4 +28,4 @@ const useTimer = (initialValue, intervalMs, onFinished) => {
     return { count, startTimer };
 };
 
-export default useTimer;
+export default useCountdown;

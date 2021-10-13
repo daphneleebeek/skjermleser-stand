@@ -26,6 +26,8 @@ const Skjema = ({ settStartetSkjema }) => {
 
     const sendInnSkjema = (event) => {
         event.preventDefault();
+        // TODO: validering
+        // TODO: Stopp timer
         settStartetSkjema(false);
     }
 

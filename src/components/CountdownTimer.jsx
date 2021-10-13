@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import useTimer from '../hooks/useTimer';
+import useCountdown from '../hooks/useCountdown';
 
 const CountdownButton = styled.button`
     padding: 0;
@@ -24,7 +24,7 @@ const CountdownButton = styled.button`
 const CountdownTimer = ({ onCountdownFinished, className, startText = 'Start' }) => {
     const [hasStarted, setHasStarted] = useState(false);
 
-    const { startTimer, count } = useTimer(3, 1000, () => {
+    const { startTimer, count } = useCountdown(3, 1000, () => {
         onCountdownFinished();
     });
 
