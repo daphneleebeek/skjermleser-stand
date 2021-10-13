@@ -6,7 +6,7 @@ const Input = ({label, id}) => {
     return (
         <>
             <label htmlFor={id}>{label}:</label>
-            <input type="text" id={id} />
+            <input type="text" id={id} name={id}/>
         </>
     )
 }
@@ -37,20 +37,25 @@ const Form = ({ setFillingForm, setCurrentContestantId }) => {
     }, [startCounting, setCurrentContestantId, contestantId]);
 
     const saveHighscoreInLocalStorage = () => {
-        console.log(document.getElementById('name')); // TODO
-        const highscore = {id: contestantId, name: 'test', score: count} // TODO funker ikke som det skal ved lagring
+        const name = document.getElementById('name').value;
+        const highscore = {id: contestantId, name, score: count} // TODO bruke navn
         const newHighscoreList = currentHighscoreList ? [...currentHighscoreList, highscore] : [highscore]
         localStorage.setItem('highscores', JSON.stringify(newHighscoreList));
     };
 
+    const validationOk = () => {
+        return document.getElementById('name').value.length > 3;
+    }
+
 
     const sendInnSkjema = (event) => {
         event.preventDefault();
-        // TODO: validering
-        // TODO: Stopp timer
-        saveHighscoreInLocalStorage();
-        stopCounting()
-        setFillingForm(false);
+        if (validationOk()) {
+            saveHighscoreInLocalStorage();
+            stopCounting()
+            setFillingForm(false);
+        }
+        // TODO vis feilmeldinger
     }
 
     return (

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import Form from "./components/Form";
 import CountdownTimer from "./components/CountdownTimer";
 import Highscore from "./components/Highscore";
@@ -6,12 +6,6 @@ import Highscore from "./components/Highscore";
 const App = () => {
     const [fillingForm, setFillingForm] = useState();
     const [currentContestantId, setCurrentContestantId] = useState();
-
-    useEffect(() => {
-        if (!localStorage.getItem('highscore')) {
-            localStorage.setItem('highscores', [])
-        }
-    }, [])
 
       return (
         <main className="App">
