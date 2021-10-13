@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import Skjema from "./components/Skjema";
+import Form from "./components/Form";
 import CountdownTimer from "./components/CountdownTimer";
+import Highscore from "./components/Highscore";
 
 const App = () => {
     const [startetSkjema, settStartetSkjema] = useState();
@@ -11,8 +12,9 @@ const App = () => {
             <h1>Skjermeleser-stand</h1>
           </header>
             {startetSkjema ?
-                <Skjema settStartetSkjema={settStartetSkjema} />
+                <Form settStartetSkjema={settStartetSkjema} />
                 : <CountdownTimer onCountdownFinished={() => settStartetSkjema(true)}/>}
+            <Highscore />
         </main>
   );
 }
