@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef } from 'react';
 
 const useStopWatch = () => {
-    const [count, setCount] = useState(0);
+    const [count, setCount] = useState(1);
 
     const intervalRef = useRef(null);
 

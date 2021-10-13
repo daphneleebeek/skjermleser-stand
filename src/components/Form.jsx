@@ -17,28 +17,36 @@ const StyledForm = styled.form`
   width: 50%;
 `;
 
-const Form = ({ settStartetSkjema }) => {
+const Form = ({ setStartetForm, setCurrentContestantId }) => {
     const { startCounting, stopCounting, count } = useStopWatch();
+    const [ currentHighscoreList ] = useState(
+        localStorage.getItem('highscores') ? JSON.parse(localStorage.getItem('highscores')) : []
+    )
     const [ skjemaKomponenter ] = useState(
         [
-            <Input key={'navn'} label={'Navnet ditt'} id={'navn'} />,
+            <Input key={'navn'} label={'Navnet ditt'} id={'name'} />,
             <Input key={'tlf'} label={'Telefonnr'} id={'tlf'} />,
             <Input key={'noeannet'} label={'Noe annet'} id={'noeannet'} />
         ].sort((a, b) => 0.5 - Math.random()))
 
+    const contestantId = currentHighscoreList.length;
+
     useEffect(() => {
-        console.log('kjører en gang')
+        setCurrentContestantId(contestantId)
         startCounting()
-    }, []);
+    }, [startCounting, setCurrentContestantId, contestantId]);
 
 
     const sendInnSkjema = (event) => {
         event.preventDefault();
         // TODO: validering
         // TODO: Stopp timer
-        // TODO: Lagre i local storage
+        console.log(document.getElementById('name')); // TODO
+        const highscore = {id: contestantId, name: 'test', score: count} // TODO
+        const newHighscoreList = currentHighscoreList ? [...currentHighscoreList, highscore] : [highscore]
+        localStorage.setItem('highscores', JSON.stringify(newHighscoreList));
         stopCounting()
-        settStartetSkjema(false);
+        setStartetForm(false);
     }
 
     return (
