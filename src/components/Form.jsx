@@ -3,6 +3,7 @@ import styled from "styled-components";
 import useStopWatch from "../hooks/useStopWatch";
 import {Feiloppsummering, Input, Radio, RadioGruppe, Select} from "nav-frontend-skjema";
 import Time from "./Time";
+import {getRandomSentence} from "../utils";
 
 const StyledForm = styled.form`
   display: flex;
@@ -28,6 +29,8 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
     const [ currentHighscoreList ] = useState(
         localStorage.getItem('highscores') ? JSON.parse(localStorage.getItem('highscores')) : []
     )
+    const [randomSentence] = useState(getRandomSentence());
+
     const [ schemaElements, setSchemaElements ] = useState(
         [
             {
@@ -61,6 +64,12 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
                 errorMsg: 'Du må gjette hvem som er administrerende direktør',
                 showError: false,
                 validation: () => document.getElementById('direktør')
+            },
+            {
+                component: <Input label={`Skriv følgende setning i inputfeltet: ${randomSentence}`} id={'randomSentence'}/>,
+                errorMsg: `Du må skrive ${randomSentence} i inputfeltet`,
+                showError: false,
+                validation: () => document.getElementById('randomSentence').value === randomSentence // TODO: stor forbokstav
             },
         ].sort((a, b) => 0.5 - Math.random()))
 

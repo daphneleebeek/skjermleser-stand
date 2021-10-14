@@ -2,7 +2,7 @@ import React from "react";
 import {Text} from "./Form";
 import styled from "styled-components";
 
-const Container = styled.div`
+const Container = styled.span`
   display: flex;
 `;
 
