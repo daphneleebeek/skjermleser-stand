@@ -9,8 +9,20 @@ const Container = styled.main`
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 60%;
-    margin: auto;
+    width: 45rem;
+    margin: 5rem auto;
+    text-align: center;
+`;
+
+const PageTitle = styled.h1`
+    font-weight: 100;
+`;
+
+const IntroTekst = styled.p`
+  color: #162365;
+  font-family: DINOT;
+  font-size: 1.25rem;
+  margin-bottom: 3rem;
 `;
 
 const App = () => {
@@ -20,18 +32,16 @@ const App = () => {
       return (
         <Container>
           <header className="App-header">
-            <h1>Skjermleser-stand</h1>
+            <PageTitle>UU-utfordringen</PageTitle>
           </header>
-            <p>Under utvikling</p>
             {
                 fillingForm ?
                 <Form setFillingForm={setFillingForm} setCurrentContestantId={setCurrentContestantId}/>
                 : <>
-                        <p>Hvem i Bekk er raskest til å fylle ut et skjema med skjermleser?<br /><br />
-                            Universell utforming handler om å gjøre tjenester vi lager tilgjengelig for alle,
-                            uavhengig av hvilken forutsetning man har. Personer som ser dårlig har ofte behov
-                            for hjelpemidler som skjermleser og navigering med tastatur.<br /><br />
-                            Klarer du å navigere deg gjennom et skjema, uten å se?</p>
+                        <IntroTekst>
+                            <b>Er du den raskeste bekkeren til å fylle ut et med skjermleser?</b><br /><br />
+                            Hvis du vinner vil UU i praksis faggruppen gjennomføre en analyse av en side eller et produkt du jobber på!
+                        </IntroTekst>
                         <CountdownTimer onCountdownFinished={() => setFillingForm(true)}/>
                         <Highscore currentContestantId={currentContestantId}/>
                 </>
