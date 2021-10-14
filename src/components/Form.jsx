@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import useStopWatch from "../hooks/useStopWatch";
 import {Feiloppsummering, Input} from "nav-frontend-skjema";
+import {compareArraysAsSet} from "@testing-library/jest-dom/dist/utils";
 
 const StyledForm = styled.form`
   display: flex;
@@ -18,16 +19,22 @@ const Form = ({ setFillingForm, setCurrentContestantId }) => {
     const [ schemaElements, setSchemaElements ] = useState(
         [
             {
-                component: <Input key={'name'} label={'Navnet ditt:'} id={'name'} />,
+                component: <Input key={'name'} label={'Navnet ditt:'} id={'name'}/>,
                 errorMsg: 'Du må skrive navn',
                 showError: false,
                 validation: () => document.getElementById('name').value.length > 3
             },
             {
                 component: <Input key={'tlf'} label={'Telefonnr'} id={'tlf'} />,
-                errorMsg: 'Du må skrive navn',
+                errorMsg: 'Du må skrive tlf',
                 showError: false,
                 validation: () => document.getElementById('tlf').value.length === 8
+            },
+            {
+                component: <Input key={'adr'} label={'Adresse'} id={'adr'} />,
+                errorMsg: 'Du må skrive adresse',
+                showError: false,
+                validation: () => document.getElementById('adr').value.length === 8
             },
         ].sort((a, b) => 0.5 - Math.random()))
 
@@ -48,7 +55,17 @@ const Form = ({ setFillingForm, setCurrentContestantId }) => {
 
     const validationOk = () => {
         const updatedElements = schemaElements.map(element => {
-            return {...element, showError: !element.validation()}
+            const showError = !element.validation();
+            return {
+                ...element,
+                showError,
+                component: {
+                    ...element.component,
+                    props: {
+                        ...element.component.props,
+                        feil: showError ? element.errorMsg : ''
+                    }
+                }}
         });
         const showError = updatedElements.find(element => element.showError)
         setShowError(showError);
