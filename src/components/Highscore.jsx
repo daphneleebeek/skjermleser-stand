@@ -3,14 +3,21 @@ import styled from "styled-components";
 import Contestant from "./Contestant";
 
 const HighscoreContainer = styled.div`
-  width: 100%;
+  margin-top: 3rem;
+  width: 80%;
+  text-align: left;
+`;
+
+const List = styled.ul`
+  padding: 0;
+  list-style-type: none;
 `;
 
 const Highscore = ({currentContestantId}) => {
     return (
         <HighscoreContainer>
-            <h2>HIGHSCORE:</h2>
-            <ul>
+            <h2>Highscore:</h2>
+            <List>
                 { localStorage.getItem('highscores')
                 && JSON.parse(localStorage.getItem('highscores'))
                     .sort((a, b) => (a.score > b.score) ? 1 : -1)
@@ -22,7 +29,7 @@ const Highscore = ({currentContestantId}) => {
                             highlight={contestant.id === currentContestantId}/>
                     })
                 }
-            </ul>
+            </List>
         </HighscoreContainer>
     );
 };
