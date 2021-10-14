@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import useStopWatch from "../hooks/useStopWatch";
-import {Feiloppsummering, Input, Radio, RadioGruppe, Select} from "nav-frontend-skjema";
+import {CheckboxGruppe, Checkbox, Feiloppsummering, Input, Radio, RadioGruppe, Select} from "nav-frontend-skjema";
 import Time from "./Time";
 import {getRandomSentence} from "../utils";
 
@@ -63,13 +63,23 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
                 </RadioGruppe>,
                 errorMsg: 'Du må gjette hvem som er administrerende direktør',
                 showError: false,
-                validation: () => document.getElementById('direktør')
+                validation: () => document.getElementById('direktør') // TODO: stor validering
             },
             {
                 component: <Input label={`Skriv følgende setning i inputfeltet: ${randomSentence}`} id={'randomSentence'}/>,
                 errorMsg: `Du må skrive ${randomSentence} i inputfeltet`,
                 showError: false,
                 validation: () => document.getElementById('randomSentence').value === randomSentence // TODO: stor forbokstav
+            },
+            {
+                component: <CheckboxGruppe legend="Hvilken serie har du sett?">
+                    <Checkbox label={"todo"} />
+                    <Checkbox label={"todo"} />
+                    <Checkbox label={"Æsj, ser ikke på serier"} />
+                </CheckboxGruppe>,
+                errorMsg: `Du må svare på hvilken serier du har sett`,
+                showError: false,
+                validation: () => document.getElementById('serier') // TODO: stor validering
             },
         ].sort((a, b) => 0.5 - Math.random()))
 
