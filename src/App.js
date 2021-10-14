@@ -22,6 +22,7 @@ const App = () => {
           <header className="App-header">
             <h1>Skjermleser-stand</h1>
           </header>
+            <p>Under utvikling</p>
             {
                 fillingForm ?
                 <Form setFillingForm={setFillingForm} setCurrentContestantId={setCurrentContestantId}/>

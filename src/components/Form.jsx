@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import useStopWatch from "../hooks/useStopWatch";
 import {Feiloppsummering, Input} from "nav-frontend-skjema";
-import {compareArraysAsSet} from "@testing-library/jest-dom/dist/utils";
 
 const StyledForm = styled.form`
   display: flex;
