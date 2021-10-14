@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import useStopWatch from "../hooks/useStopWatch";
-import {Feiloppsummering, Input} from "nav-frontend-skjema";
+import {Feiloppsummering, Input, Radio, RadioGruppe, Select} from "nav-frontend-skjema";
 import Time from "./Time";
 
 const StyledForm = styled.form`
@@ -27,22 +27,36 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
     const [ schemaElements, setSchemaElements ] = useState(
         [
             {
-                component: <Input key={'name'} label={'Navnet ditt:'} id={'name'}/>,
-                errorMsg: 'Du må skrive navn',
+                component: <Input key={'name'} label={'Hva heter du?'} id={'name'}/>,
+                errorMsg: 'Du må svare med minst to bokstaver på hva du heter',
                 showError: false,
-                validation: () => document.getElementById('name').value.length > 3
+                validation: () => document.getElementById('name').value.length > 1
             },
             {
-                component: <Input key={'tlf'} label={'Telefonnr'} id={'tlf'} />,
-                errorMsg: 'Du må skrive tlf',
+                component: <Select label={'Hvilken avdeling er du i?'} id={'avdeling'}>
+                    <option value=''>Velg avdeling</option>
+                    <option value="design">Design</option>
+                    <option value="teknologi">Teknologi</option>
+                    <option value="basen">Basen</option>
+                    <option value="salgOgAdmin">Salg og Admin</option>
+                    <option value="bmc">BMC</option>
+                    <option value="oppdrag">Oppdrag</option>
+                    <option value="trondheim">Trondheim</option>
+                    <option value="annet">Annet</option>
+                </Select>,
+                errorMsg: 'Du må velge hvilken avdeling du er i',
                 showError: false,
-                validation: () => document.getElementById('tlf').value.length === 8
+                validation: () => document.getElementById('avdeling').value !== ''
             },
             {
-                component: <Input key={'adr'} label={'Adresse'} id={'adr'} />,
-                errorMsg: 'Du må skrive adresse',
+                component: <RadioGruppe legend="Hvem er administrerende direktør i Bekk?" id={'direktør'}>
+                    <Radio label={"todo"} name="direktør" />
+                    <Radio label={"todo"} name="direktør" />
+                    <Radio label={"todo"} name="direktør" />
+                </RadioGruppe>,
+                errorMsg: 'Du må gjette hvem som er administrerende direktør',
                 showError: false,
-                validation: () => document.getElementById('adr').value.length === 8
+                validation: () => document.getElementById('direktør')
             },
         ].sort((a, b) => 0.5 - Math.random()))
 
