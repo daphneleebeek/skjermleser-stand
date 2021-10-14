@@ -1,23 +1,20 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useRef } from 'react';
 
 const useStopWatch = () => {
-    const [count, setCount] = useState(1);
+    const [count, setCount] = useState(0)
+    const countRef = useRef(null)
 
-    const intervalRef = useRef(null);
 
     const stopCounting = () => {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
+        clearInterval(countRef.current)
+        setCount(0)
     }
 
-    const startCounting = useCallback(() => {
-        if (intervalRef.current !== null) {
-            return;
-        }
-        intervalRef.current = setInterval(() => {
-            setCount(prevState => prevState + 1);
-        }, 1000);
-    }, []);
+    const startCounting = () => {
+        countRef.current = setInterval(() => {
+            setCount((timer) => timer + 10)
+        }, 10)
+    }
 
     return { count, startCounting, stopCounting };
 };

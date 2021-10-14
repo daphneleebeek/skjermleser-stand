@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
+import {Text} from "./Form";
+import Time from "./Time";
 
 const StyledContestant = styled.li`
     display: flex;
@@ -31,14 +33,6 @@ const RankWithCircle = styled.span`
     color: #162365;
 `;
 
-const Text = styled.p`
-  font-size: 1.25rem;
-  margin: 0;
-  padding: 0;
-  line-height: initial;
-  font-family: DINOT;
-`;
-
 const Name = styled.div`
     white-space: nowrap;
     overflow: hidden;
@@ -63,7 +57,7 @@ const Contestant = ({ contestant, rank, highlight = false }) => (
             </RankWithCircle>
         </RankContainer>
         <Name><Text>{contestant.name}</Text></Name>
-        <Score><Text>{contestant.score}</Text></Score>
+        <Score><Time time={contestant.score} /></Score>
     </StyledContestant>
 );
 

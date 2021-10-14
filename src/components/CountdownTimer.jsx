@@ -5,8 +5,8 @@ import useCountdown from '../hooks/useCountdown';
 
 const CountdownButton = styled.button`
     padding: 0;
-    height: 16vh;
-    width: 16vh;
+    height: 20vh;
+    width: 20vh;
     border: 1px solid #FF8034;
     background-color: transparent;
     border-radius: 20vh;

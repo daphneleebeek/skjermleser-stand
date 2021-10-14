@@ -2,11 +2,20 @@ import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import useStopWatch from "../hooks/useStopWatch";
 import {Feiloppsummering, Input} from "nav-frontend-skjema";
+import Time from "./Time";
 
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   width: 50%;
+`;
+
+export const Text = styled.p`
+  font-size: 1.25rem;
+  margin: 0;
+  padding: 0;
+  line-height: initial;
+  font-family: DINOT;
 `;
 
 const Form = ({ setFillingForm, setCurrentContestantId }) => {
@@ -43,7 +52,7 @@ const Form = ({ setFillingForm, setCurrentContestantId }) => {
     useEffect(() => {
         setCurrentContestantId(contestantId)
         startCounting()
-    }, [startCounting, setCurrentContestantId, contestantId]);
+    }, []);
 
     const saveHighscoreInLocalStorage = () => {
         const name = document.getElementById('name').value;
@@ -84,7 +93,9 @@ const Form = ({ setFillingForm, setCurrentContestantId }) => {
 
     return (
         <StyledForm aria-live={'polite'} onSubmit={sendInnSkjema}>
-            <p aria-hidden={true}>{count}</p>
+            <div aria-hidden={true}>
+                <Time time={count} />
+            </div>
             {schemaElements.map(element => element.component)}
 
             {showError && <Feiloppsummering
