@@ -1,8 +1,10 @@
 import React, {useState} from "react";
-import Form from "./components/Form";
+import Form, {Text} from "./components/Form";
 import CountdownTimer from "./components/CountdownTimer";
 import Highscore from "./components/Highscore";
 import styled from "styled-components";
+import Time from "./components/Time";
+import {getHighscoreList} from "./utils";
 
 const Container = styled.main`
     display: flex;
@@ -27,7 +29,7 @@ const IntroTekst = styled.p`
 
 const App = () => {
     const [fillingForm, setFillingForm] = useState();
-    const [currentContestant, setCurrentContestant] = useState({id: 0, score: 0});
+    const [currentContestant, setCurrentContestant] = useState({id: undefined, score: 0});
 
       return (
         <Container>
@@ -38,13 +40,15 @@ const App = () => {
                 fillingForm ?
                 <Form setFillingForm={setFillingForm} setCurrentContestant={setCurrentContestant}/>
                 : <>
-                    <p>du fikk {currentContestant.score} poeng</p>
-                        <IntroTekst>
-                            <b>Er du den raskeste bekkeren til å fylle ut et med skjermleser?</b><br /><br />
-                            Hvis du vinner vil UU i praksis faggruppen gjennomføre en analyse av en side eller et produkt du jobber på!
-                        </IntroTekst>
-                        <CountdownTimer onCountdownFinished={() => setFillingForm(true)}/>
-                        <Highscore currentContestant={currentContestant}/>
+                    <Text>
+                        Du brukte <Time time={currentContestant.score} /> og kom på {getHighscoreList().findIndex(highscore => highscore.id === currentContestant.id) + 1}. plass
+                    </Text>
+                    <IntroTekst>
+                        <b>Er du den raskeste bekkeren til å fylle ut et med skjermleser?</b><br /><br />
+                        Hvis du vinner vil UU i praksis faggruppen gjennomføre en analyse av en side eller et produkt du jobber på!
+                    </IntroTekst>
+                    <CountdownTimer onCountdownFinished={() => setFillingForm(true)}/>
+                    <Highscore currentContestant={currentContestant}/>
                 </>
             }
         </Container>
