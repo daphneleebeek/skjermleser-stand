@@ -1,15 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import useStopWatch from "../hooks/useStopWatch";
-
-const Input = ({label, id}) => {
-    return (
-        <>
-            <label htmlFor={id}>{label}:</label>
-            <input type="text" id={id} name={id}/>
-        </>
-    )
-}
+import {Feiloppsummering, Input} from "nav-frontend-skjema";
 
 const StyledForm = styled.form`
   display: flex;
@@ -19,15 +11,26 @@ const StyledForm = styled.form`
 
 const Form = ({ setFillingForm, setCurrentContestantId }) => {
     const { startCounting, stopCounting, count } = useStopWatch();
+    const [showError, setShowError] = useState(false);
     const [ currentHighscoreList ] = useState(
         localStorage.getItem('highscores') ? JSON.parse(localStorage.getItem('highscores')) : []
     )
-    const [ skjemaKomponenter ] = useState(
+    const [ schemaElements, setSchemaElements ] = useState(
         [
-            <Input key={'navn'} label={'Navnet ditt'} id={'name'} />,
-            <Input key={'tlf'} label={'Telefonnr'} id={'tlf'} />,
-            <Input key={'noeannet'} label={'Noe annet'} id={'noeannet'} />
+            {
+                component: <Input key={'name'} label={'Navnet ditt:'} id={'name'} />,
+                errorMsg: 'Du må skrive navn',
+                showError: false,
+                validation: () => document.getElementById('name').value.length > 3
+            },
+            {
+                component: <Input key={'tlf'} label={'Telefonnr'} id={'tlf'} />,
+                errorMsg: 'Du må skrive navn',
+                showError: false,
+                validation: () => document.getElementById('tlf').value.length === 8
+            },
         ].sort((a, b) => 0.5 - Math.random()))
+
 
     const contestantId = currentHighscoreList.length;
 
@@ -44,7 +47,13 @@ const Form = ({ setFillingForm, setCurrentContestantId }) => {
     };
 
     const validationOk = () => {
-        return document.getElementById('name').value.length > 3;
+        const updatedElements = schemaElements.map(element => {
+            return {...element, showError: !element.validation()}
+        });
+        const showError = updatedElements.find(element => element.showError)
+        setShowError(showError);
+        setSchemaElements(updatedElements);
+        return !showError;
     }
 
 
@@ -55,14 +64,20 @@ const Form = ({ setFillingForm, setCurrentContestantId }) => {
             stopCounting()
             setFillingForm(false);
         }
-        console.log('hehe')
-        // TODO vis feilmeldinger
     }
 
     return (
-        <StyledForm onSubmit={sendInnSkjema}>
+        <StyledForm aria-live={'polite'} onSubmit={sendInnSkjema}>
             <p aria-hidden={true}>{count}</p>
-            {skjemaKomponenter}
+            {schemaElements.map(element => element.component)}
+
+            {showError && <Feiloppsummering
+                tittel="For å gå videre må du rette opp følgende:"
+                feil={schemaElements
+                    .filter(element => element.showError)
+                    .map(element => ({ skjemaelementId: element.component.props.id, feilmelding: element.errorMsg }))}
+            />}
+
             <button type="submit">Send inn</button>
         </StyledForm>
     );
