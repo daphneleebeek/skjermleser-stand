@@ -18,6 +18,10 @@ export const Text = styled.p`
   font-family: DINOT;
 `;
 
+export const SchemaElement = styled.div`
+  margin-bottom: 3rem;
+`;
+
 const Form = ({ setFillingForm, setCurrentContestant }) => {
     const { startCounting, stopCounting, count } = useStopWatch();
     const [showError, setShowError] = useState(false);
@@ -27,7 +31,7 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
     const [ schemaElements, setSchemaElements ] = useState(
         [
             {
-                component: <Input key={'name'} label={'Hva heter du?'} id={'name'}/>,
+                component: <Input label={'Hva heter du?'} id={'name'}/>,
                 errorMsg: 'Du må svare med minst to bokstaver på hva du heter',
                 showError: false,
                 validation: () => document.getElementById('name').value.length > 1
@@ -112,7 +116,7 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
             <div aria-hidden={true}>
                 <Time time={count} />
             </div>
-            {schemaElements.map(element => element.component)}
+            {schemaElements.map((element, index) => <SchemaElement key={index}>{element.component}</SchemaElement>)}
 
             {showError && <Feiloppsummering
                 tittel="For å gå videre må du rette opp følgende:"
