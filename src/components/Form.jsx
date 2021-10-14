@@ -55,6 +55,7 @@ const Form = ({ setFillingForm, setCurrentContestantId }) => {
             stopCounting()
             setFillingForm(false);
         }
+        console.log('hehe')
         // TODO vis feilmeldinger
     }
 
