@@ -13,7 +13,7 @@ const List = styled.ul`
   list-style-type: none;
 `;
 
-const Highscore = ({currentContestantId}) => {
+const Highscore = ({currentContestant}) => {
     return (
         <HighscoreContainer>
             <h2>Highscore:</h2>
@@ -26,7 +26,7 @@ const Highscore = ({currentContestantId}) => {
                             key={contestant.id}
                             contestant={{name: contestant.name, score: contestant.score}}
                             rank={index+1}
-                            highlight={contestant.id === currentContestantId}/>
+                            highlight={contestant.id === currentContestant.id}/>
                     })
                 }
             </List>

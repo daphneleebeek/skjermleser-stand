@@ -27,7 +27,7 @@ const IntroTekst = styled.p`
 
 const App = () => {
     const [fillingForm, setFillingForm] = useState();
-    const [currentContestantId, setCurrentContestantId] = useState();
+    const [currentContestant, setCurrentContestant] = useState({id: 0, score: 0});
 
       return (
         <Container>
@@ -36,14 +36,15 @@ const App = () => {
           </header>
             {
                 fillingForm ?
-                <Form setFillingForm={setFillingForm} setCurrentContestantId={setCurrentContestantId}/>
+                <Form setFillingForm={setFillingForm} setCurrentContestant={setCurrentContestant}/>
                 : <>
+                    <p>du fikk {currentContestant.score} poeng</p>
                         <IntroTekst>
                             <b>Er du den raskeste bekkeren til å fylle ut et med skjermleser?</b><br /><br />
                             Hvis du vinner vil UU i praksis faggruppen gjennomføre en analyse av en side eller et produkt du jobber på!
                         </IntroTekst>
                         <CountdownTimer onCountdownFinished={() => setFillingForm(true)}/>
-                        <Highscore currentContestantId={currentContestantId}/>
+                        <Highscore currentContestant={currentContestant}/>
                 </>
             }
         </Container>

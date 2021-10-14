@@ -18,7 +18,7 @@ export const Text = styled.p`
   font-family: DINOT;
 `;
 
-const Form = ({ setFillingForm, setCurrentContestantId }) => {
+const Form = ({ setFillingForm, setCurrentContestant }) => {
     const { startCounting, stopCounting, count } = useStopWatch();
     const [showError, setShowError] = useState(false);
     const [ currentHighscoreList ] = useState(
@@ -50,13 +50,13 @@ const Form = ({ setFillingForm, setCurrentContestantId }) => {
     const contestantId = currentHighscoreList.length;
 
     useEffect(() => {
-        setCurrentContestantId(contestantId)
+        setCurrentContestant({id: contestantId, score: 0})
         startCounting()
     }, []);
 
-    const saveHighscoreInLocalStorage = () => {
+    const saveHighscoreInLocalStorage = (score) => {
         const name = document.getElementById('name').value;
-        const highscore = {id: contestantId, name, score: count} // TODO bruke navn
+        const highscore = {id: contestantId, name, score: score}
         const newHighscoreList = currentHighscoreList ? [...currentHighscoreList, highscore] : [highscore]
         localStorage.setItem('highscores', JSON.stringify(newHighscoreList));
     };
@@ -85,7 +85,9 @@ const Form = ({ setFillingForm, setCurrentContestantId }) => {
     const sendInnSkjema = (event) => {
         event.preventDefault();
         if (validationOk()) {
-            saveHighscoreInLocalStorage();
+            const score = count;
+            setCurrentContestant({id: contestantId, score: score})
+            saveHighscoreInLocalStorage(score);
             stopCounting()
             setFillingForm(false);
         }
