@@ -7,17 +7,20 @@ const CountdownButton = styled.button`
     padding: 0;
     height: 20vh;
     width: 20vh;
-    border: 1px solid yellow;
+    border: 1px solid #FF8034;
+    background-color: #FFB88D;
     border-radius: 20vh;
-    color: black;
-    background: transparent;
+    color: #0E0E0E;
     cursor: pointer;
     font-size: 1.25em;
     :focus {
         outline: none;
+        background-color: #FF9999;
+        border: 1px solid #FF5B5B;
     }
     :hover {
-        background-color: red;
+        background-color: #FF9999;
+        border: 1px solid #FF5B5B;
     }
 `;
 
