@@ -76,8 +76,15 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
             },
             {
                 component: <CheckboxGruppe legend="Hvilken serie har du sett?">
-                    <Checkbox label={"todo"} className={'serier'} />
-                    <Checkbox label={"todo"} className={'serier'} />
+                    <Checkbox label={<span lang={"en"}>Squid Game</span>} className={'serier'} />
+                    <Checkbox label={<span lang={"en"}>How I Met Your Mother</span>} className={'serier'} />
+                    <Checkbox label={<span lang={"en"}>The Good Place</span>} className={'serier'} />
+                    <Checkbox label={<span lang={"en"}>Game of Thrones</span>} className={'serier'} />
+                    <Checkbox label={"Broen"} className={'serier'} />
+                    <Checkbox label={<span lang={"en"}>Community</span>} className={'serier'} />
+                    <Checkbox label={"Farmen"} className={'serier'} />
+                    <Checkbox label={<span lang={"en"}>Love is Blind</span>} className={'serier'} />
+                    <Checkbox label={<span lang={"en"}>Parks and Recreation</span>} className={'serier'} />
                     <Checkbox label={"Æsj, ser ikke på serier"} className={'serier'} />
                 </CheckboxGruppe>,
                 errorMsg: `Du må svare på hvilken serier du har sett`,
