@@ -100,16 +100,36 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
     )
     const [randomSentence] = useState(getRandomSentence());
 
+    const validationOk = () => {
+        const updatedElements = schemaElements.map(element => {
+            const showError = !element.validation();
+            return {
+                ...element,
+                showError,
+                component: {
+                    ...element.component,
+                    props: {
+                        ...element.component.props,
+                        feil: showError ? element.errorMsg : ''
+                    }
+                }}
+        });
+        const showError = updatedElements.find(element => element.showError)
+        setShowError(showError);
+        setSchemaElements(updatedElements);
+        return !showError;
+    }
+
     const [ schemaElements, setSchemaElements ] = useState(
         [
             {
-                component: <StyledInput label={'Hva heter du?'} id={'name'}/>,
+                component: <StyledInput label={'Hva heter du?'} id={'name'} onChange={validationOk}/>,
                 errorMsg: 'Du må svare med minst to bokstaver på hva du heter',
                 showError: false,
                 validation: () => document.getElementById('name').value.length > 1
             },
             {
-                component: <Select label={'Hvilken avdeling er du i?'} id={'avdeling'}>
+                component: <Select label={'Hvilken avdeling er du i?'} id={'avdeling'} onChange={validationOk}>
                     <option value=''>Velg avdeling</option>
                     <option value="design">Design</option>
                     <option value="teknologi">Teknologi</option>
@@ -125,7 +145,7 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
                 validation: () => document.getElementById('avdeling').value !== ''
             },
             {
-                component: <RadioGruppe legend="Hvem er administrerende direktør i Bekk?" id={'direktør'} onChange={() => {}}>
+                component: <RadioGruppe legend="Hvem er administrerende direktør i Bekk?" id={'direktør'} onChange={validationOk}>
                     <Radio label={"Marius Helstad"} name="direktør" className={'direktør'}/>
                     <Radio label={"Helene Vollene"} name="direktør" className={'direktør'}/>
                     <Radio label={"Jøran Lillesand"} name="direktør" className={'direktør'}/>
@@ -138,13 +158,13 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
                 validation: () => document.getElementById('olav').checked
             },
             {
-                component: <StyledInput label={`Skriv følgende setning i inputfeltet: ${randomSentence}`} id={'randomSentence'}/>,
+                component: <StyledInput label={`Skriv følgende setning i inputfeltet: ${randomSentence}`} id={'randomSentence'} onChange={validationOk}/>,
                 errorMsg: `Du må skrive ${randomSentence} i inputfeltet`,
                 showError: false,
                 validation: () => document.getElementById('randomSentence').value.toLowerCase() === randomSentence.toLowerCase()
             },
             {
-                component: <CheckboxGruppe legend="Hvilken serie har du sett?">
+                component: <CheckboxGruppe legend="Hvilken serie har du sett?" onChange={validationOk}>
                     <Checkbox label={<span lang={"en"}>Squid Game</span>} className={'serier'} />
                     <Checkbox label={<span lang={"en"}>How I Met Your Mother</span>} className={'serier'} />
                     <Checkbox label={<span lang={"en"}>The Good Place</span>} className={'serier'} />
@@ -181,27 +201,6 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
         const newHighscoreList = currentHighscoreList ? [...currentHighscoreList, highscore] : [highscore]
         localStorage.setItem('highscores', JSON.stringify(newHighscoreList));
     };
-
-    const validationOk = () => {
-        const updatedElements = schemaElements.map(element => {
-            const showError = !element.validation();
-            return {
-                ...element,
-                showError,
-                component: {
-                    ...element.component,
-                    props: {
-                        ...element.component.props,
-                        feil: showError ? element.errorMsg : ''
-                    }
-                }}
-        });
-        const showError = updatedElements.find(element => element.showError)
-        setShowError(showError);
-        setSchemaElements(updatedElements);
-        return !showError;
-    }
-
 
     const sendInnSkjema = (event) => {
         event.preventDefault();
