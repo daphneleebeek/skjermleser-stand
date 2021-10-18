@@ -56,32 +56,40 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
                 validation: () => document.getElementById('avdeling').value !== ''
             },
             {
-                component: <RadioGruppe legend="Hvem er administrerende direktør i Bekk?" id={'direktør'}>
-                    <Radio label={"todo"} name="direktør" />
-                    <Radio label={"todo"} name="direktør" />
-                    <Radio label={"todo"} name="direktør" />
+                component: <RadioGruppe legend="Hvem er administrerende direktør i Bekk?" id={'direktør'} onChange={() => {}}>
+                    <Radio label={"Marius Helstad"} name="direktør" />
+                    <Radio label={"Helene Vollene"} name="direktør" />
+                    <Radio label={"Jøran Lillesand"} name="direktør" />
+                    <Radio label={"Olav Folkestad"} name="direktør" id={'olav'}/>
+                    <Radio label={"Unni Nyhamar Hinkel"} name="direktør" />
+                    <Radio label={"Reidar Sande"} name="direktør" />
                 </RadioGruppe>,
                 errorMsg: 'Du må gjette hvem som er administrerende direktør',
                 showError: false,
-                validation: () => document.getElementById('direktør') // TODO: stor validering
+                validation: () => document.getElementById('olav').checked
             },
             {
                 component: <Input label={`Skriv følgende setning i inputfeltet: ${randomSentence}`} id={'randomSentence'}/>,
                 errorMsg: `Du må skrive ${randomSentence} i inputfeltet`,
                 showError: false,
-                validation: () => document.getElementById('randomSentence').value === randomSentence // TODO: stor forbokstav
+                validation: () => document.getElementById('randomSentence').value.toLowerCase() === randomSentence.toLowerCase()
             },
             {
                 component: <CheckboxGruppe legend="Hvilken serie har du sett?">
-                    <Checkbox label={"todo"} />
-                    <Checkbox label={"todo"} />
-                    <Checkbox label={"Æsj, ser ikke på serier"} />
+                    <Checkbox label={"todo"} className={'serier'} />
+                    <Checkbox label={"todo"} className={'serier'} />
+                    <Checkbox label={"Æsj, ser ikke på serier"} className={'serier'} />
                 </CheckboxGruppe>,
                 errorMsg: `Du må svare på hvilken serier du har sett`,
                 showError: false,
-                validation: () => document.getElementById('serier') // TODO: stor validering
+                validation: () => {
+                    const checkboxes = document.getElementsByClassName('checkboks');
+                    return Array.from(checkboxes).find(element => element.checked)
+                }
             },
         ].sort((a, b) => 0.5 - Math.random()))
+
+
 
 
     const contestantId = currentHighscoreList.length;
