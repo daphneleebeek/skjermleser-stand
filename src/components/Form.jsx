@@ -5,10 +5,42 @@ import {CheckboxGruppe, Checkbox, Feiloppsummering, Input, Radio, RadioGruppe, S
 import Time from "./Time";
 import {getRandomSentence} from "../utils";
 
-const StyledForm = styled.form`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 50%;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+`;
+
+const StyledForm = styled.form`
+  text-align: left;
+  color: #162365;
+  border: 2px solid #FF8034;
+  padding: 3rem;
+  margin-top: 3rem;
+  
+  fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  p, legend, label {
+    font-size: 1.25rem;
+  }
+
+  .serier > label, .direktør > label {
+    font-size: 1rem;
+  }
+  
+  .skjemaelement__feilmelding {
+    color: #FF5B5B;
+    .typo-feilmelding {
+      margin: 0;
+      font-weight: bold;
+    }
+  }
 `;
 
 export const Text = styled.p`
@@ -19,9 +51,46 @@ export const Text = styled.p`
   font-family: DINOT;
 `;
 
+export const Tid = styled.div`
+    display: flex;
+    flex-direction: row;
+`;
+
 export const SchemaElement = styled.div`
   margin-bottom: 3rem;
 `;
+
+const StyledInput = styled(Input)`
+    display: flex;
+    flex-direction: column;
+  
+    input{
+        width: 50%;
+    }
+`
+
+const StyledButton = styled.button`
+    width: 15rem;
+    height: 3rem;
+    border: 1px solid #FF8034;
+    background-color: transparent;
+    color: #162365;
+    cursor: pointer;
+    font-size: 1.25em;
+    :focus {
+    outline: none;
+    background-color: #FFB88D;
+    }
+    :hover {
+    background-color: #FFB88D;
+    }
+`;
+
+const StyledFeiloppsummering = styled(Feiloppsummering)`
+  border: 2px solid #FF5B5B;
+  padding: 0.5rem;
+  margin: 2rem 0;
+`
 
 const Form = ({ setFillingForm, setCurrentContestant }) => {
     const { startCounting, stopCounting, count } = useStopWatch();
@@ -34,7 +103,7 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
     const [ schemaElements, setSchemaElements ] = useState(
         [
             {
-                component: <Input label={'Hva heter du?'} id={'name'}/>,
+                component: <StyledInput label={'Hva heter du?'} id={'name'}/>,
                 errorMsg: 'Du må svare med minst to bokstaver på hva du heter',
                 showError: false,
                 validation: () => document.getElementById('name').value.length > 1
@@ -57,19 +126,19 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
             },
             {
                 component: <RadioGruppe legend="Hvem er administrerende direktør i Bekk?" id={'direktør'} onChange={() => {}}>
-                    <Radio label={"Marius Helstad"} name="direktør" />
-                    <Radio label={"Helene Vollene"} name="direktør" />
-                    <Radio label={"Jøran Lillesand"} name="direktør" />
-                    <Radio label={"Olav Folkestad"} name="direktør" id={'olav'}/>
-                    <Radio label={"Unni Nyhamar Hinkel"} name="direktør" />
-                    <Radio label={"Reidar Sande"} name="direktør" />
+                    <Radio label={"Marius Helstad"} name="direktør" className={'direktør'}/>
+                    <Radio label={"Helene Vollene"} name="direktør" className={'direktør'}/>
+                    <Radio label={"Jøran Lillesand"} name="direktør" className={'direktør'}/>
+                    <Radio label={"Olav Folkestad"} name="direktør" id={'olav'} className={'direktør'}/>
+                    <Radio label={"Unni Nyhamar Hinkel"} name="direktør" className={'direktør'}/>
+                    <Radio label={"Reidar Sande"} name="direktør" className={'direktør'}/>
                 </RadioGruppe>,
                 errorMsg: 'Du må gjette hvem som er administrerende direktør',
                 showError: false,
                 validation: () => document.getElementById('olav').checked
             },
             {
-                component: <Input label={`Skriv følgende setning i inputfeltet: ${randomSentence}`} id={'randomSentence'}/>,
+                component: <StyledInput label={`Skriv følgende setning i inputfeltet: ${randomSentence}`} id={'randomSentence'}/>,
                 errorMsg: `Du må skrive ${randomSentence} i inputfeltet`,
                 showError: false,
                 validation: () => document.getElementById('randomSentence').value.toLowerCase() === randomSentence.toLowerCase()
@@ -146,21 +215,23 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
     }
 
     return (
-        <StyledForm aria-live={'polite'} onSubmit={sendInnSkjema}>
-            <div aria-hidden={true}>
-                <Time time={count} />
-            </div>
-            {schemaElements.map((element, index) => <SchemaElement key={index}>{element.component}</SchemaElement>)}
+        <Container>
+            <Tid aria-hidden={true}>
+                <Text>Tid brukt: </Text><Time time={count} />
+            </Tid>
+            <StyledForm aria-live={'polite'} onSubmit={sendInnSkjema}>
+                {schemaElements.map((element, index) => <SchemaElement key={index}>{element.component}</SchemaElement>)}
 
-            {showError && <Feiloppsummering
-                tittel="For å gå videre må du rette opp følgende:"
-                feil={schemaElements
-                    .filter(element => element.showError)
-                    .map(element => ({ skjemaelementId: element.component.props.id, feilmelding: element.errorMsg }))}
-            />}
+                {showError && <StyledFeiloppsummering
+                    tittel="For å gå videre må du rette opp følgende:"
+                    feil={schemaElements
+                        .filter(element => element.showError)
+                        .map(element => ({ skjemaelementId: element.component.props.id, feilmelding: element.errorMsg }))}
+                />}
 
-            <button type="submit">Send inn</button>
-        </StyledForm>
+                <StyledButton type="submit">Send inn</StyledButton>
+            </StyledForm>
+        </Container>
     );
 };
 
