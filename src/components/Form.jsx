@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styled from "styled-components";
 import useStopWatch from "../hooks/useStopWatch";
 import {CheckboxGruppe, Checkbox, Feiloppsummering, Input, Radio, RadioGruppe, Select} from "nav-frontend-skjema";
@@ -19,7 +19,7 @@ const StyledForm = styled.form`
   border: 2px solid #FF8034;
   padding: 3rem;
   margin-top: 3rem;
-  filter: blur(6px);
+  //filter: blur(6px);
   
   fieldset {
     border: none;
@@ -100,9 +100,9 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
         localStorage.getItem('highscores') ? JSON.parse(localStorage.getItem('highscores')) : []
     )
     const [randomSentence] = useState(getRandomSentence());
+    const validationOk = useRef(null)
 
-    const validationOk = (prøverÅSendeInnSkjema = false) => {
-        prøverÅSendeInnSkjema && setShowErrorSummary(true);
+    validationOk.current = (kommerFraKnapp = false) => {
         const updatedElements = schemaElements.map(element => {
             const hasError = !element.validation();
             return {
@@ -112,7 +112,7 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
                     ...element.component,
                     props: {
                         ...element.component.props,
-                        feil: prøverÅSendeInnSkjema && hasError ? element.errorMsg : ''
+                        feil: (kommerFraKnapp || showErrorSummary) && hasError ? element.errorMsg : ''
                     }
                 }}
         });
@@ -125,13 +125,13 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
     const [ schemaElements, setSchemaElements ] = useState(
         [
             {
-                component: <StyledInput label={'Hva heter du?'} id={'name'} onChange={validationOk}/>,
+                component: <StyledInput label={'Hva heter du?'} id={'name'} onChange={() => validationOk.current()}/>,
                 errorMsg: 'Du må svare med minst to bokstaver på hva du heter',
                 showError: false,
                 validation: () => document.getElementById('name').value.length > 1
             },
             {
-                component: <Select label={'Hvilken avdeling er du i?'} id={'avdeling'} onChange={validationOk}>
+                component: <Select label={'Hvilken avdeling er du i?'} id={'avdeling'} onChange={() => validationOk.current()}>
                     <option value=''>Velg avdeling</option>
                     <option value="design">Design</option>
                     <option value="teknologi">Teknologi</option>
@@ -147,7 +147,7 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
                 validation: () => document.getElementById('avdeling').value !== ''
             },
             {
-                component: <RadioGruppe legend="Hvem er administrerende direktør i Bekk?" id={'direktør'} onChange={validationOk}>
+                component: <RadioGruppe legend="Hvem er administrerende direktør i Bekk?" id={'direktør'} onChange={() => validationOk.current()}>
                     <Radio label={"Marius Helstad"} name="direktør" className={'direktør'}/>
                     <Radio label={"Helene Vollene"} name="direktør" className={'direktør'}/>
                     <Radio label={"Jøran Lillesand"} name="direktør" className={'direktør'}/>
@@ -160,13 +160,13 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
                 validation: () => document.getElementById('olav').checked
             },
             {
-                component: <StyledInput label={`Skriv følgende setning i inputfeltet: ${randomSentence}`} id={'randomSentence'} onChange={validationOk}/>,
+                component: <StyledInput label={`Skriv følgende setning i inputfeltet: ${randomSentence}`} id={'randomSentence'} onChange={() => validationOk.current()}/>,
                 errorMsg: `Du må skrive ${randomSentence} i inputfeltet`,
                 showError: false,
                 validation: () => document.getElementById('randomSentence').value.toLowerCase() === randomSentence.toLowerCase()
             },
             {
-                component: <CheckboxGruppe legend="Hvilken serie har du sett?" onChange={validationOk}>
+                component: <CheckboxGruppe legend="Hvilken serie har du sett?" onChange={() => validationOk.current()}>
                     <Checkbox label={<span lang={"en"}>Squid Game</span>} className={'serier'} />
                     <Checkbox label={<span lang={"en"}>How I Met Your Mother</span>} className={'serier'} />
                     <Checkbox label={<span lang={"en"}>The Good Place</span>} className={'serier'} />
@@ -206,7 +206,8 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
 
     const sendInnSkjema = (event) => {
         event.preventDefault();
-        if (validationOk(true)) {
+        setShowErrorSummary(true);
+        if (validationOk.current(true)) {
             const score = count;
             setCurrentContestant({id: contestantId, score: score})
             saveHighscoreInLocalStorage(score);
