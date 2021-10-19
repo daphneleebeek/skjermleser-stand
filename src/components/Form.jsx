@@ -19,6 +19,7 @@ const StyledForm = styled.form`
   border: 2px solid #FF8034;
   padding: 3rem;
   margin-top: 3rem;
+  //filter: blur(8px);
   
   fieldset {
     border: none;
@@ -100,7 +101,8 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
     )
     const [randomSentence] = useState(getRandomSentence());
 
-    const validationOk = () => {
+    const validationOk = (prøverÅSendeInnSkjema = false) => {
+        prøverÅSendeInnSkjema && setShowErrorSummary(true);
         const updatedElements = schemaElements.map(element => {
             const hasError = !element.validation();
             return {
@@ -110,11 +112,11 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
                     ...element.component,
                     props: {
                         ...element.component.props,
-                        feil: showErrorSummary && hasError ? element.errorMsg : ''
+                        feil: prøverÅSendeInnSkjema && hasError ? element.errorMsg : ''
                     }
                 }}
         });
-        const validationOk = !updatedElements.find(element => element.showError);
+        const validationOk = !(updatedElements.find(element => element.showError));
         validationOk && setShowErrorSummary(false);
         setSchemaElements(updatedElements);
         return validationOk;
@@ -204,14 +206,12 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
 
     const sendInnSkjema = (event) => {
         event.preventDefault();
-        if (validationOk()) {
+        if (validationOk(true)) {
             const score = count;
             setCurrentContestant({id: contestantId, score: score})
             saveHighscoreInLocalStorage(score);
             stopCounting()
             setFillingForm(false);
-        } else {
-            setShowErrorSummary(true);
         }
     }
 
