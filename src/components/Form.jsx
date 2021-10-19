@@ -188,7 +188,7 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
 
 
 
-    const contestantId = currentHighscoreList.length;
+    const contestantId = currentHighscoreList.length + 1;
 
     useEffect(() => {
         setCurrentContestant({id: contestantId, score: 0})
@@ -220,8 +220,8 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
             <Tid aria-hidden={true}>
                 <Text>Tid brukt: </Text><Time time={count} />
             </Tid>
-            <span aria-label={'Du kan begynne å fylle ut skjema'} aria-live={'assertive'} />
             <StyledForm onSubmit={sendInnSkjema}>
+                <p aria-live={'assertive'}>Du kan begynne å fylle ut skjema</p>
                 {schemaElements.map((element, index) => <SchemaElement key={index}>{element.component}</SchemaElement>)}
                 {showErrorSummary && <StyledFeiloppsummering
                     role={'alert'}

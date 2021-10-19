@@ -21,7 +21,7 @@ const Highscore = ({currentContestant}) => {
             {
                 getHighscoreList() &&
                 <List>
-                    { getHighscoreList().map((contestant, index) => {
+                    { getHighscoreList().slice(0, 15).map((contestant, index) => {
                         return <Contestant
                             key={contestant.id}
                             contestant={{name: contestant.name, score: contestant.score}}
