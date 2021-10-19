@@ -18,16 +18,19 @@ const Highscore = ({currentContestant}) => {
     return (
         <HighscoreContainer>
             <h2>Highscore:</h2>
-            <List>
-                { getHighscoreList().map((contestant, index) => {
+            {
+                getHighscoreList() &&
+                <List>
+                    { getHighscoreList().map((contestant, index) => {
                         return <Contestant
                             key={contestant.id}
                             contestant={{name: contestant.name, score: contestant.score}}
                             rank={index+1}
                             highlight={contestant.id === currentContestant.id}/>
                     })
-                }
-            </List>
+                    }
+                </List>
+            }
         </HighscoreContainer>
     );
 };

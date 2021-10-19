@@ -40,11 +40,12 @@ const App = () => {
                 fillingForm ?
                 <Form setFillingForm={setFillingForm} setCurrentContestant={setCurrentContestant}/>
                 : <>
-                    <Text>
+                    {!!currentContestant.score &&
+                    (<Text>
                         Du brukte <Time time={currentContestant.score} /> og kom på {getHighscoreList().findIndex(highscore => highscore.id === currentContestant.id) + 1}. plass
-                    </Text>
+                    </Text>)}
                     <IntroTekst>
-                        <b>Er du den raskeste bekkeren til å fylle ut et med skjermleser?</b><br /><br />
+                        <b>Er du den raskeste bekkeren til å fylle ut et skjema med skjermleser?</b><br /><br />
                         Hvis du vinner vil UU i praksis faggruppen gjennomføre en analyse av en side eller et produkt du jobber på!
                     </IntroTekst>
                     <CountdownTimer onCountdownFinished={() => setFillingForm(true)}/>

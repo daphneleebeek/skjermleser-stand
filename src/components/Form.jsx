@@ -94,7 +94,7 @@ const StyledFeiloppsummering = styled(Feiloppsummering)`
 
 const Form = ({ setFillingForm, setCurrentContestant }) => {
     const { startCounting, stopCounting, count } = useStopWatch();
-    const [showError, setShowError] = useState(false);
+    const [showErrorSummary, setShowErrorSummary] = useState(false);
     const [ currentHighscoreList ] = useState(
         localStorage.getItem('highscores') ? JSON.parse(localStorage.getItem('highscores')) : []
     )
@@ -102,22 +102,22 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
 
     const validationOk = () => {
         const updatedElements = schemaElements.map(element => {
-            const showError = !element.validation();
+            const hasError = !element.validation();
             return {
                 ...element,
-                showError,
+                showError: hasError,
                 component: {
                     ...element.component,
                     props: {
                         ...element.component.props,
-                        feil: showError ? element.errorMsg : ''
+                        feil: showErrorSummary && hasError ? element.errorMsg : ''
                     }
                 }}
         });
-        const showError = updatedElements.find(element => element.showError)
-        setShowError(showError);
+        const validationOk = !updatedElements.find(element => element.showError);
+        validationOk && setShowErrorSummary(false);
         setSchemaElements(updatedElements);
-        return !showError;
+        return validationOk;
     }
 
     const [ schemaElements, setSchemaElements ] = useState(
@@ -210,6 +210,8 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
             saveHighscoreInLocalStorage(score);
             stopCounting()
             setFillingForm(false);
+        } else {
+            setShowErrorSummary(true);
         }
     }
 
@@ -218,10 +220,11 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
             <Tid aria-hidden={true}>
                 <Text>Tid brukt: </Text><Time time={count} />
             </Tid>
-            <StyledForm aria-live={'polite'} onSubmit={sendInnSkjema}>
+            <span aria-label={'Du kan begynne å fylle ut skjema'} aria-live={'assertive'} />
+            <StyledForm onSubmit={sendInnSkjema}>
                 {schemaElements.map((element, index) => <SchemaElement key={index}>{element.component}</SchemaElement>)}
-
-                {showError && <StyledFeiloppsummering
+                {showErrorSummary && <StyledFeiloppsummering
+                    role={'alert'}
                     tittel="For å gå videre må du rette opp følgende:"
                     feil={schemaElements
                         .filter(element => element.showError)
