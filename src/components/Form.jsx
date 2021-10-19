@@ -102,6 +102,20 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
     const [randomSentence] = useState(getRandomSentence());
     const validationOk = useRef(null)
 
+    const contestantId = currentHighscoreList.length + 1;
+
+    useEffect(() => {
+        setCurrentContestant({id: contestantId, score: 0})
+        startCounting()
+    }, []);
+
+    const saveHighscoreInLocalStorage = (score) => {
+        const name = document.getElementById('name').value;
+        const highscore = {id: contestantId, name, score: score}
+        const newHighscoreList = currentHighscoreList ? [...currentHighscoreList, highscore] : [highscore]
+        localStorage.setItem('highscores', JSON.stringify(newHighscoreList));
+    };
+
     validationOk.current = (kommerFraKnapp = false) => {
         const updatedElements = schemaElements.map(element => {
             const hasError = !element.validation();
@@ -121,6 +135,15 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
         setSchemaElements(updatedElements);
         return validationOk;
     }
+
+    const [radioList] = useState([
+        <Radio label={"Marius Helstad"} name="direktør" className={'direktør'}/>,
+        <Radio label={"Helene Vollene"} name="direktør" className={'direktør'}/>,
+        <Radio label={"Jøran Lillesand"} name="direktør" className={'direktør'}/>,
+        <Radio label={"Olav Folkestad"} name="direktør" id={'olav'} className={'direktør'}/>,
+        <Radio label={"Unni Nyhamar Hinkel"} name="direktør" className={'direktør'}/>,
+        <Radio label={"Reidar Sande"} name="direktør" className={'direktør'}/>
+    ].sort((a, b) => 0.5 - Math.random()))
 
     const [ schemaElements, setSchemaElements ] = useState(
         [
@@ -148,12 +171,7 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
             },
             {
                 component: <RadioGruppe legend="Hvem er administrerende direktør i Bekk?" id={'direktør'} onChange={() => validationOk.current()}>
-                    <Radio label={"Marius Helstad"} name="direktør" className={'direktør'}/>
-                    <Radio label={"Helene Vollene"} name="direktør" className={'direktør'}/>
-                    <Radio label={"Jøran Lillesand"} name="direktør" className={'direktør'}/>
-                    <Radio label={"Olav Folkestad"} name="direktør" id={'olav'} className={'direktør'}/>
-                    <Radio label={"Unni Nyhamar Hinkel"} name="direktør" className={'direktør'}/>
-                    <Radio label={"Reidar Sande"} name="direktør" className={'direktør'}/>
+                    {radioList.map(radio => radio)}
                 </RadioGruppe>,
                 errorMsg: 'Du må gjette hvem som er administrerende direktør',
                 showError: false,
@@ -186,23 +204,6 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
                 }
             },
         ].sort((a, b) => 0.5 - Math.random()))
-
-
-
-
-    const contestantId = currentHighscoreList.length + 1;
-
-    useEffect(() => {
-        setCurrentContestant({id: contestantId, score: 0})
-        startCounting()
-    }, []);
-
-    const saveHighscoreInLocalStorage = (score) => {
-        const name = document.getElementById('name').value;
-        const highscore = {id: contestantId, name, score: score}
-        const newHighscoreList = currentHighscoreList ? [...currentHighscoreList, highscore] : [highscore]
-        localStorage.setItem('highscores', JSON.stringify(newHighscoreList));
-    };
 
     const sendInnSkjema = (event) => {
         event.preventDefault();
