@@ -173,7 +173,7 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
                 component: <RadioGruppe legend="Hvem er administrerende direktør i Bekk?" id={'direktør'} onChange={() => validationOk.current()}>
                     {radioList.map(radio => radio)}
                 </RadioGruppe>,
-                errorMsg: 'Du må gjette hvem som er administrerende direktør',
+                errorMsg: 'Du må gjette hvem som er administrerende direktør eller du har gjettet feil',
                 showError: false,
                 validation: () => document.getElementById('olav').checked
             },
@@ -226,7 +226,7 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
                 <p aria-live={'assertive'}>Du kan begynne å fylle ut skjema</p>
                 {schemaElements.map((element, index) => <SchemaElement key={index}>{element.component}</SchemaElement>)}
                 {showErrorSummary && <StyledFeiloppsummering
-                    role={'alert'}
+                    aria-live={'polite'}
                     tittel="For å gå videre må du rette opp følgende:"
                     feil={schemaElements
                         .filter(element => element.showError)
