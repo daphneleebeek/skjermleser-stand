@@ -99,7 +99,6 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
     const [ currentHighscoreList ] = useState(
         localStorage.getItem('highscores') ? JSON.parse(localStorage.getItem('highscores')) : []
     )
-    const [randomSentence] = useState(getRandomSentence());
     const validationOk = useRef(null)
 
     const contestantId = currentHighscoreList.length + 1;
@@ -178,13 +177,7 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
                 validation: () => document.getElementById('olav').checked
             },
             {
-                component: <StyledInput label={`Skriv følgende setning i inputfeltet: ${randomSentence}`} id={'randomSentence'} onChange={() => validationOk.current()}/>,
-                errorMsg: `Du må skrive ${randomSentence} i inputfeltet`,
-                showError: false,
-                validation: () => document.getElementById('randomSentence').value.toLowerCase() === randomSentence.toLowerCase()
-            },
-            {
-                component: <CheckboxGruppe legend="Hvilken serie har du sett?" onChange={() => validationOk.current()}>
+                component: <CheckboxGruppe id={'serier'} legend="Hvilken serie har du sett?" onChange={() => validationOk.current()}>
                     <Checkbox label={<span lang={"en"}>Squid Game</span>} className={'serier'} />
                     <Checkbox label={<span lang={"en"}>How I Met Your Mother</span>} className={'serier'} />
                     <Checkbox label={<span lang={"en"}>The Good Place</span>} className={'serier'} />
