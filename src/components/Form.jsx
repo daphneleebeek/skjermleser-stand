@@ -20,6 +20,7 @@ const StyledForm = styled.form`
   padding: 3rem;
   margin-top: 3rem;
   filter: blur(6px);
+  width: 70%;
   
   fieldset {
     border: none;

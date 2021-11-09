@@ -78,8 +78,7 @@ const App = () => {
                         )
                     }
                     <IntroTekst>
-                        <b>Er du den raskeste bekkeren til å fylle ut et skjema med skjermleser?</b><br /><br />
-                        Hvis du vinner vil UU i praksis faggruppen gjennomføre en analyse av en side eller et produkt du jobber på!
+                        <b>Er du den raskeste her i kveld til å fylle ut et skjema med skjermleser?</b><br /><br />
                     </IntroTekst>
                     <CountdownTimer onCountdownFinished={() => setFillingForm(true)}/>
                     <Highscore currentContestant={currentContestant}/>
