@@ -19,7 +19,7 @@ const StyledForm = styled.form`
   border: 2px solid #FF8034;
   padding: 3rem;
   margin-top: 3rem;
-  //filter: blur(6px);
+  filter: blur(6px);
   
   fieldset {
     border: none;
