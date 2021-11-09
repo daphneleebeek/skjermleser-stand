@@ -19,7 +19,7 @@ const StyledForm = styled.form`
   border: 2px solid #FF8034;
   padding: 3rem;
   margin-top: 3rem;
-  filter: blur(6px);
+  //filter: blur(6px);
   
   fieldset {
     border: none;
@@ -31,7 +31,7 @@ const StyledForm = styled.form`
     font-size: 1.25rem;
   }
 
-  .serier > label, .direktør > label {
+  .serier > label, .dag > label {
     font-size: 1rem;
   }
   
@@ -136,12 +136,11 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
     }
 
     const [radioList] = useState([
-        <Radio label={"Marius Helstad"} name="direktør" className={'direktør'}/>,
-        <Radio label={"Helene Vollene"} name="direktør" className={'direktør'}/>,
-        <Radio label={"Jøran Lillesand"} name="direktør" className={'direktør'}/>,
-        <Radio label={"Olav Folkestad"} name="direktør" id={'olav'} className={'direktør'}/>,
-        <Radio label={"Unni Nyhamar Hinkel"} name="direktør" className={'direktør'}/>,
-        <Radio label={"Reidar Sande"} name="direktør" className={'direktør'}/>
+        <Radio label={"Mandag"} name="dag" className={'dag'}/>,
+        <Radio label={"Tirsdag"} name="dag" className={'dag'}/>,
+        <Radio label={"Onsdag"} name="dag" className={'dag'}/>,
+        <Radio label={"Torsdag"} name="dag" id={'torsdag'} className={'dag'}/>,
+        <Radio label={"Fredag"} name="dag" className={'dag'}/>,
     ].sort((a, b) => 0.5 - Math.random()))
 
     const [ schemaElements, setSchemaElements ] = useState(
@@ -153,41 +152,34 @@ const Form = ({ setFillingForm, setCurrentContestant }) => {
                 validation: () => document.getElementById('name').value.length > 1
             },
             {
-                component: <Select label={'Hvilken avdeling er du i?'} id={'avdeling'} onChange={() => validationOk.current()}>
-                    <option value=''>Velg avdeling</option>
-                    <option value="design">Design</option>
-                    <option value="teknologi">Teknologi</option>
-                    <option value="basen">Basen</option>
-                    <option value="salgOgAdmin">Salg og Admin</option>
-                    <option value="bmc">BMC</option>
-                    <option value="oppdrag">Oppdrag</option>
-                    <option value="trondheim">Trondheim</option>
+                component: <Select label={'Hvilken rolle har du?'} id={'rolle'} onChange={() => validationOk.current()}>
+                    <option value=''>Velg rolle</option>
+                    <option value="uxDesign">UX designer</option>
+                    <option value="grafiskDesign">Grafisk designer</option>
+                    <option value="tekstforfatter">Tekstforfatter</option>
+                    <option value="utvikler">Utvikler</option>
+                    <option value="forretningsutvikler">Forretningsutvikler</option>
                     <option value="annet">Annet</option>
                 </Select>,
-                errorMsg: 'Du må velge hvilken avdeling du er i',
+                errorMsg: 'Du må velge hvilken rolle du har',
                 showError: false,
-                validation: () => document.getElementById('avdeling').value !== ''
+                validation: () => document.getElementById('rolle').value !== ''
             },
             {
-                component: <RadioGruppe legend="Hvem er administrerende direktør i Bekk?" id={'direktør'} onChange={() => validationOk.current()}>
+                component: <RadioGruppe legend={'Hvilken dag er det i dag?'} id={'dag'} onChange={() => validationOk.current()}>
                     {radioList.map(radio => radio)}
                 </RadioGruppe>,
-                errorMsg: 'Du må gjette hvem som er administrerende direktør eller du har gjettet feil',
+                errorMsg: 'Du må velge hvilken dag det er i dag eller du har valgt feil dag',
                 showError: false,
-                validation: () => document.getElementById('olav').checked
+                validation: () => document.getElementById('torsdag').checked
             },
             {
                 component: <CheckboxGruppe id={'serier'} legend="Hvilken serie har du sett?" onChange={() => validationOk.current()}>
-                    <Checkbox label={<span lang={"en"}>Squid Game</span>} className={'serier'} />
+                    <Checkbox label={<span lang={"en"}>Friends</span>} className={'serier'} />
                     <Checkbox label={<span lang={"en"}>How I Met Your Mother</span>} className={'serier'} />
-                    <Checkbox label={<span lang={"en"}>The Good Place</span>} className={'serier'} />
                     <Checkbox label={<span lang={"en"}>Game of Thrones</span>} className={'serier'} />
-                    <Checkbox label={"Broen"} className={'serier'} />
-                    <Checkbox label={<span lang={"en"}>Community</span>} className={'serier'} />
-                    <Checkbox label={"Farmen"} className={'serier'} />
-                    <Checkbox label={<span lang={"en"}>Love is Blind</span>} className={'serier'} />
-                    <Checkbox label={<span lang={"en"}>Parks and Recreation</span>} className={'serier'} />
-                    <Checkbox label={"Æsj, ser ikke på serier"} className={'serier'} />
+                    <Checkbox label={<span lang={"en"}>Farmen</span>} className={'serier'} />
+                    <Checkbox label={"Ingen av disse"} className={'serier'} />
                 </CheckboxGruppe>,
                 errorMsg: `Du må svare på hvilken serier du har sett`,
                 showError: false,
